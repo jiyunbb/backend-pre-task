@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SECRET_KEY=django-insecure-op0*5hfs^r=8tqr59pcp-f_20b3!95+o=w$d8jihh)h^miltix
+      - DJANGO_DEBUG=True
+      - DJANGO_ALLOWED_HOSTS=*
+      - DB_HOST=db
+      - DB_NAME=kids_db
+      - DB_USER=root
+      - DB_PASSWORD=1234
+  db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/02_data.sql
+    ports:
+      - "33062:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "kids_db"
+    network_mode: "bridge"
