@@ -1,0 +1,120 @@
+/contacts/{contact_id}/users:
+  get:
+    summary: 주소록에 연결된 유저 목록 조회
+    parameters:
+      - in: header
+        name: user-id
+        description: 유저 ID
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: contact_id
+        required: true
+        description: 주소록 ID
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: 페이지 수
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: page_size
+        description: 1페이지 당 유저 수
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: sort_by
+        required: false
+        description: 정렬 기준 (name, email, tel)
+        schema:
+          type: string
+          enum: [ name, email, tel ]
+      - in: query
+        name: sort_order
+        required: false
+        description: 정렬 순서 (asc, desc)
+        schema:
+          type: string
+          enum: [ asc, desc ]
+    responses:
+      '200':
+        description: 성공적으로 유저 목록을 가져옴
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: 유저 수
+                next:
+                  type: string
+                  description: 다음 페이지 결과 링크
+                previous:
+                  type: string
+                  description: 이전 페이지 결과 링크
+                results:
+                  type: array
+                  items:
+                    type: object
+                    allOf:
+                      - $ref: '../components/schemas/users.yaml#/BaseUser'
+                      - type: object
+                        properties:
+                          company_info:
+                            type: string
+                            description: 유저 회사 및 직급 정보
+                            examples: '해삼주식회사 (대리)'
+      '400':
+        description: Bad request - 잘못된 파라미터
+      '404':
+        description: 해당 ID를 가진 주소록을 찾을 수 없음
+  post:
+    summary: 주소록에 새로운 유저 생성
+    parameters:
+      - in: header
+        name: user-id
+        description: 유저 ID
+        required: true
+        schema:
+          type: integer
+      - name: contact_id
+        in: path
+        description: 주소록 ID
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../components/schemas/users.yaml#/DetailedUser'
+              - type: object
+                properties:
+                  default_address:
+                    type: string
+                    nullable: true
+                    description: 유저의 기본 주소
+                    example: '서울시 강남구'
+                  detail_address:
+                    type: string
+                    nullable: true
+                    description: 유저의 상세 주소
+                    example: '역삼동 11-3'
+                  zipcode:
+                    type: integer
+                    nullable: true
+                    description: 유저의 우편번호
+                    example: 947830
+
+    responses:
+      '201':
+        description: 성공적으로 유저 생성함
+      '400':
+        description: Bad request - 잘못된 파라미터

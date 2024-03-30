@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  title: 키즈노트 과제
+  description: 키즈노트 과제, 왕지윤
+  version: 1.0.0
+servers:
+  - url: 'http'
+paths:
+  /contacts/{contact_id}/users:
+    $ref: '/paths/contacts.yaml#/~1contacts~1{contact_id}~1users'
+  /users/{user_id}:
+    $ref: '/paths/users.yaml#/~1users~1{user_id}'
+

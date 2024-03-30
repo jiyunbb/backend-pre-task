@@ -1,0 +1,73 @@
+BaseUser:
+  type: object
+  description: 유저 공통 정보
+  properties:
+    profile_url:
+      type: string
+      nullable: true
+      format: uri
+      description: 유저의 프로필 이미지 URL
+      example: 'https://kidsnote.co.kr/images/user/profile/happy.jpg'
+    name:
+      type: string
+      description: 유저의 이름
+      example: '오랑이'
+    email:
+      type: string
+      format: email
+      description: 유저의 이메일 주소
+      example: 'joho88@naver.com'
+    tel:
+      type: string
+      description: 유저의 전화번호
+      example: '010-1234-5678'
+    labels:
+      type: array
+      description: 유저에게 할당된 라벨 목록
+      items:
+        type: object
+        nullable: true
+        properties:
+          id:
+            type: integer
+            description: 라벨의 고유 식별자
+            example: 1
+          name:
+            type: string
+            description: 라벨의 이름
+            example: '가족'
+
+DetailedUser:
+  type: object
+  description: 유저 상세 정보
+  allOf:
+    - $ref: './users.yaml#/BaseUser'
+    - type: object
+      properties:
+        memo:
+          type: string
+          nullable: true
+          description: 유저에 대한 메모
+          example: '메모는 사랑입니다.'
+        company:
+          type: string
+          nullable: true
+          description: 유저의 회사
+          example: '해삼주식회사'
+        position:
+          type: string
+          nullable: true
+          description: 유저의 직무
+          example: '대리'
+        birth:
+          type: string
+          nullable: true
+          format: date
+          description: 유저의 생년월일
+          example: '1996-01-03'
+        website:
+          type: string
+          nullable: true
+          format: uri
+          description: 유저의 웹사이트 URL
+          example: 'https://www.ddd.kr'
