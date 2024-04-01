@@ -1,19 +1,27 @@
-create table contact
+SET NAMES utf8mb4;
+SET
+CHARACTER SET utf8mb4;
+
+create table if not exists contact
 (
-    id      int auto_increment
+    id          int auto_increment
         primary key,
-    user_id int         not null comment '주소록 소유자 id',
-    name    varchar(20) not null comment '주소록 이름',
+    user_id     int         not null comment '주소록 소유자 id',
+    name        varchar(20) not null comment '주소록 이름',
+    created_at  datetime    null comment '생성일',
+    modified_at datetime    null comment '수정일',
     constraint contact__user_id
         unique (user_id)
 );
 
-create table contact_user_map
+create table if not exists contact_user_map
 (
-    id         int auto_increment
+    id          int auto_increment
         primary key,
-    contact_id int not null comment '주소록 id',
-    user_id    int not null comment '유저 id'
+    contact_id  int      not null comment '주소록 id',
+    user_id     int      not null comment '유저 id',
+    created_at  datetime null comment '생성일',
+    modified_at datetime null comment '수정일'
 )
     comment '주소록 유저 매핑 테이블';
 
@@ -23,14 +31,16 @@ create index contact_user_map_contact_id
 create index contact_user_map_user_id
     on contact_user_map (user_id);
 
-create table label
+create table if not exists label
 (
-    id   int auto_increment
+    id          int auto_increment
         primary key,
-    name varchar(20) not null comment '라벨명'
+    name        varchar(20) not null comment '라벨명',
+    created_at  datetime    null comment '생성일',
+    modified_at datetime    null comment '수정일'
 );
 
-create table user
+create table if not exists user
 (
     id              int auto_increment
         primary key,
@@ -46,6 +56,8 @@ create table user
     zipcode         varchar(6)   null comment '우편번호',
     website         varchar(300) null comment '웹사이트',
     memo            varchar(30)  null comment '메모',
+    created_at      datetime     null comment '생',
+    modified_at     datetime     null,
     constraint user__email
         unique (email),
     constraint user__phone_number
@@ -55,12 +67,14 @@ create table user
 create index user__name
     on user (name);
 
-create table user_label_map
+create table if not exists user_label_map
 (
-    id       int auto_increment
+    id          int auto_increment
         primary key,
-    user_id  int not null comment '유저 id',
-    label_id int not null comment '라벨 id'
+    user_id     int      not null comment '유저 id',
+    label_id    int      not null comment '라벨 id',
+    created_at  datetime null comment '생성일',
+    modified_at datetime null comment '수정일'
 )
     comment '유저 라벨 매핑 테이블';
 
@@ -69,4 +83,6 @@ create index user_label_map__label_id
 
 create index user_label_map__user_id
     on user_label_map (user_id);
+
+
 

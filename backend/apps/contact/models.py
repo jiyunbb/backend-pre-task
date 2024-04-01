@@ -5,6 +5,8 @@ from django.db import models
 class Contact(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, db_column='user_id', related_name='contacts')
     name = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -16,6 +18,8 @@ class ContactUserMap(models.Model):
     contact = models.ForeignKey(Contact, on_delete=models.DO_NOTHING, db_column='contact_id',
                                 related_name='contact_user_maps')
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, db_column='user_id', related_name='contact_user_maps')
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False

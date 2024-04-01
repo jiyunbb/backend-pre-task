@@ -15,6 +15,8 @@ class User(models.Model):
     zipcode = models.CharField(max_length=6, null=True)
     birth = models.DateField(null=True)
     website = models.CharField(max_length=300, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def full_address(self):
         if not (self.zipcode or self.default_address or self.detail_address):
@@ -46,6 +48,8 @@ class User(models.Model):
 
 class Label(models.Model):
     name = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -56,6 +60,8 @@ class Label(models.Model):
 class UserLabelMap(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, db_column='user_id', related_name='user_label_maps')
     label = models.ForeignKey(Label, on_delete=models.DO_NOTHING, db_column='label_id', related_name='user_label_maps')
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
