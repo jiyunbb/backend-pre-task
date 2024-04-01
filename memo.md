@@ -37,7 +37,7 @@
 
 
 ### 이후에 개선해보면 좋을 것들.
-1. 삭제 로직 만든다고 하면 soft delete로 설계 (DB 컬럼에 created_at, modified_at, deleted_at을 활용) 하고 deleted_at이 비어있는 케이스만 조회하도록 model manager 사용하면 좋을 것 같다.
+1. 삭제 로직 만든다고 하면 soft delete로 설계 (DB 컬럼에 deleted_at을 추가) 하고 deleted_at이 비어있는 케이스만 조회하도록 model manager 사용하면 좋을 것 같다.
 2. 지금은 단순한 형태라 유저테이블을 하나로 고려했지만 이후 확장성 생각하면 유저테이블 분리해도 좋을 것 같음.
 3. Exception 내 detail 문구가 더 다양해진다면 공통화해도 좋을 것 같음.
 4. 테스트 코드 미작성
